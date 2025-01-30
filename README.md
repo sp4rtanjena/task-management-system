@@ -1,5 +1,5 @@
-Task Management System Documentation
-This API provides a basic authentication and task management system. Users can register, log in, create, update, delete, and view tasks.
+#Task Management System Documentation
+##This API provides a basic authentication and task management system. Users can register, log in, create, update, delete, and view tasks.
 ________________________________________
 Authentication Endpoints
 POST /api/auth/register
@@ -10,20 +10,21 @@ POST /api/auth/register
   "password": "string"
 }
 •	Response:
-o	201 Created: User registered successfully.
-{ "message": "User registered successfully" }
-o	400 Bad Request: User already exists.
-{ "message": "User already exists" }
-o	500 Internal Server Error: Something went wrong on the server.
-{ "message": "Internal server error" }
-•	Example:
-o	Request:
-{
-  "username": "johnDoe",
-  "password": "securePassword123"
-}
-o	Response:
-{ "message": "User registered successfully" }
+  201 Created: User registered successfully.
+  { "message": "User registered successfully" }
+  400 Bad Request: User already exists.
+  { "message": "User already exists" }
+  500 Internal Server Error: Something went wrong on the server.
+  { "message": "Internal server error" }
+  Example:
+    Request:
+  {
+    "username": "johnDoe",
+    "password": "securePassword123"
+  }
+  Response:
+  { "message": "User registered successfully" }
+  
 POST /api/auth/login
 •	Description: Authenticates an existing user and returns a JWT token upon successful login.
 •	Request Body:
@@ -31,32 +32,33 @@ POST /api/auth/login
   "username": "string",
   "password": "string"
 }
-•	Response:
-o	200 OK: Successfully authenticated. JWT token is returned.
-{ "token": "jwt_token_string" }
-o	404 Not Found: User not found.
-{ "message": "User not found!" }
-o	400 Bad Request: Invalid credentials.
-{ "message": "Invalid credentials" }
-o	500 Internal Server Error: Something went wrong on the server.
-{ "message": "Internal server error" }
-•	Example:
-o	Request:
-{
-  "username": "johnDoe",
-  "password": "securePassword123"
-}
-o	Response:
-{ "token": "jwt_token_string" }
+  Response:
+  200 OK: Successfully authenticated. JWT token is returned.
+  { "token": "jwt_token_string" }
+  404 Not Found: User not found.
+  { "message": "User not found!" }
+  400 Bad Request: Invalid credentials.
+  { "message": "Invalid credentials" }
+  500 Internal Server Error: Something went wrong on the server.
+  { "message": "Internal server error" }
+  Example:
+    Request:
+    {
+      "username": "johnDoe",
+      "password": "securePassword123"
+    }
+    Response:
+    { "token": "jwt_token_string" }
+    
 ________________________________________
-Task Management Endpoints
-Authentication middleware is required for all task-related endpoints. Ensure to pass a valid JWT token in the request header Authorization: Bearer <token>.
+##Task Management Endpoints
+  Authentication middleware is required for all task-related endpoints. Ensure to pass a valid JWT token in the request   header Authorization: Bearer <token>.
 POST /api/tasks/create
 •	Description: Creates a new task for the authenticated user.
 •	Request Body:
-{
-  "todo": "Task description"
-}
+  {
+    "todo": "Task description"
+  }
 •	Response:
 o	201 Created: Task created successfully.
 { "message": "Task created successfully" }
