@@ -2,7 +2,7 @@
 A simple system designed to keep track of all the tasks to be done on a daily basis. Gives user the facility to not only adhere to the discipline but also make changes to the individual tasks as per the status of the task to better plan the day ahead.
 Provides user experience of editing the task, deleting and complete the task to self analyze and make future ammendments.
 
- **Getting Started with Create React App
+ ##Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
