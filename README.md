@@ -1,50 +1,159 @@
-# task-management-system
-A simple system designed to keep track of all the tasks to be done on a daily basis. Gives user the facility to not only adhere to the discipline but also make changes to the individual tasks as per the status of the task to better plan the day ahead.
-Provides user experience of editing the task, deleting and complete the task to self analyze and make future ammendments.
-
- ##Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+Task Management System Documentation
+This API provides a basic authentication and task management system. Users can register, log in, create, update, delete, and view tasks.
+________________________________________
+Authentication Endpoints
+POST /api/auth/register
+•	Description: Registers a new user by creating a new user record in the database.
+•	Request Body:
+{
+  "username": "string",
+  "password": "string"
+}
+•	Response:
+o	201 Created: User registered successfully.
+{ "message": "User registered successfully" }
+o	400 Bad Request: User already exists.
+{ "message": "User already exists" }
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Request:
+{
+  "username": "johnDoe",
+  "password": "securePassword123"
+}
+o	Response:
+{ "message": "User registered successfully" }
+POST /api/auth/login
+•	Description: Authenticates an existing user and returns a JWT token upon successful login.
+•	Request Body:
+{
+  "username": "string",
+  "password": "string"
+}
+•	Response:
+o	200 OK: Successfully authenticated. JWT token is returned.
+{ "token": "jwt_token_string" }
+o	404 Not Found: User not found.
+{ "message": "User not found!" }
+o	400 Bad Request: Invalid credentials.
+{ "message": "Invalid credentials" }
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Request:
+{
+  "username": "johnDoe",
+  "password": "securePassword123"
+}
+o	Response:
+{ "token": "jwt_token_string" }
+________________________________________
+Task Management Endpoints
+Authentication middleware is required for all task-related endpoints. Ensure to pass a valid JWT token in the request header Authorization: Bearer <token>.
+POST /api/tasks/create
+•	Description: Creates a new task for the authenticated user.
+•	Request Body:
+{
+  "todo": "Task description"
+}
+•	Response:
+o	201 Created: Task created successfully.
+{ "message": "Task created successfully" }
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Request:
+{
+  "todo": "Complete the task API documentation"
+}
+o	Response:
+{ "message": "Task created successfully" }
+GET /api/tasks/get
+•	Description: Retrieves all tasks for the authenticated user.
+•	Response:
+o	200 OK: Returns an array of tasks.
+ [
+  {
+    "_id": "task_id",
+    "userId": "user_id",
+    "todo": "Task description",
+    "isCompleted": false
+  },
+  ...
+]
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Response:
+ [
+  {
+    "_id": "60b8d90d5f4a7b2d3c45e36b",
+    "userId": "60b8d8db5f4a7b2d3c45e36a",
+    "todo": "Complete the task API documentation",
+    "isCompleted": false
+  },
+  {
+    "_id": "60b8d90d5f4a7b2d3c45e36c",
+    "userId": "60b8d8db5f4a7b2d3c45e36a",
+    "todo": "Review pull requests",
+    "isCompleted": true
+  }
+]
+PUT /api/tasks/edit
+•	Description: Updates an existing task's description.
+•	Request Body:
+{
+  "id": "task_id",
+  "todo": "Updated task description"
+}
+•	Response:
+o	200 OK: Task updated successfully.
+{ "message": "Task updated successfully", "task": updated_task }
+o	404 Not Found: Task not found.
+{ "message": "Task not found" }
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Request:
+{
+  "id": "60b8d90d5f4a7b2d3c45e36b",
+  "todo": "Complete the API documentation and submit"
+}
+o	Response:
+{ "message": "Task updated successfully", "task": { "_id": "60b8d90d5f4a7b2d3c45e36b", "todo": "Complete the API documentation and submit", "isCompleted": false } }
+DELETE /api/tasks/delete
+•	Description: Deletes a task.
+•	Request Body:
+{
+  "id": "task_id"
+}
+•	Response:
+o	200 OK: Task deleted successfully.
+{ "message": "Task deleted successfully" }
+o	404 Not Found: Task not found.
+{ "message": "Task not found" }
+o	500 Internal Server Error: Something went wrong on the server.
+{ "message": "Internal server error" }
+•	Example:
+o	Request:
+{
+  "id": "60b8d90d5f4a7b2d3c45e36b"
+}
+o	Response:
+{ "message": "Task deleted successfully" }
+________________________________________
+Authentication Middleware
+•	Purpose: Ensures that the user is authenticated before accessing task management endpoints.
+•	The middleware checks for the presence of a valid JWT in the Authorization header (Bearer <token>).
+•	If the token is valid, the user ID is extracted from the token and added to the req object as req.userId, allowing access to the user’s tasks.
+•	If the token is missing or invalid, a 401 Unauthorized response is returned.
+________________________________________
+Error Handling
+For all requests:
+•	If there is an internal server error, a generic 500 Internal Server Error response will be returned.
+•	If the request cannot be processed due to invalid input (e.g., missing required fields), an appropriate error message with a 400 Bad Request status will be returned.
+________________________________________
+Notes
+•	All task-related endpoints require authentication, which means the user must include a valid JWT token in the Authorization header of their requests.
+•	JWT token expiry is set to 1 hour, after which the user will need to log in again to get a new token.
